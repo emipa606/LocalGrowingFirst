@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-	<name>Local Growing First (Continued)</name>
-  	<packageId>Mlie.LocalGrowingFirst</packageId>
-	<author>FuriouslyEloquent</author>
-	<url>https://github.com/emipa606/LocalGrowingFirst</url>
-	<supportedVersions>
-		<li>1.1</li>
-	</supportedVersions>
-	<modDependencies />
-	<loadAfter />
-	<description>Update of FuriouslyEloquents mod for RimWorld 1.1
+  <name>Local Growing First (Continued)</name>
+  <packageId>Mlie.LocalGrowingFirst</packageId>
+  <author>FuriouslyEloquent</author>
+  <url>https://github.com/emipa606/LocalGrowingFirst</url>
+  <supportedVersions>
+    <li>1.1</li>
+  </supportedVersions>
+  <modDependencies />
+  <loadAfter />
+  <description>Update of FuriouslyEloquents mod for RimWorld 1.1
 https://steamcommunity.com/sharedfiles/filedetails/?id=1433579722
 
 [img]https://i.imgur.com/GYswkZ7.png[/img]

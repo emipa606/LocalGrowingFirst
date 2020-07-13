@@ -5,6 +5,7 @@ using System.Reflection;
 using Verse;
 using RimWorld;
 using Verse.AI;
+using Verse.Noise;
 
 namespace LocalGrowingFirst
 {
@@ -71,8 +72,10 @@ namespace LocalGrowingFirst
 
 		public override IEnumerable<IntVec3> PotentialWorkCellsGlobal(Pawn pawn)
 		{
+			if (wrappedScanner == null)
+				CreateWrappedScanner();
 			//Adapted from latter half of WorkGiver_Grower PotentialWorkCellsGlobal
-            Danger maxDanger = pawn.NormalMaxDanger();
+			Danger maxDanger = pawn.NormalMaxDanger();
 			FieldInfo wantedPlantDef = wrappedScanner.GetType().GetField("wantedPlantDef"
                                        , BindingFlags.NonPublic | BindingFlags.Public |  BindingFlags.Instance);
 			wantedPlantDef?.SetValue(wrappedScanner, null);
@@ -86,7 +89,7 @@ namespace LocalGrowingFirst
                     yield break;
             }
 
-            if (growZone.cells.Count == 0)
+			if (growZone.cells.Count == 0)
             {
                 Log.ErrorOnce("Grow zone has 0 cells: " + growZone, -563487);
             }
@@ -98,10 +101,20 @@ namespace LocalGrowingFirst
                 {
                     if (pawn.CanReach(growZone.Cells[0], PathEndMode.OnCell, maxDanger, false, TraverseMode.ByPawn))
                     {
-                        for (int k = 0; k < growZone.cells.Count; k++)
+						bool addCells = true;
+						if(wrappedScanner.ToString().Contains("Sow"))
                         {
-                            yield return growZone.cells[k];
-                        }
+							ThingDef plantToSow = growZone.GetPlantDefToGrow();
+							addCells = plantToSow.plant.sowMinSkill <= pawn.skills.GetSkill(SkillDefOf.Plants).Level;
+							//Log.Message("Pawn: " + pawn.NameShortColored + " GetPlantDefToGrow: " + growZone.GetPlantDefToGrow() + " CanSow: " + addCells);
+						}
+						if (addCells)
+						{
+							for (int k = 0; k < growZone.cells.Count; k++)
+							{
+								yield return growZone.cells[k];
+							}
+						}
                         wantedPlantDef?.SetValue(wrappedScanner, null);
                     }
                 }
