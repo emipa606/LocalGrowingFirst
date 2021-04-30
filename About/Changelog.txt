@@ -1,5 +1,8 @@
 # Changelog for LocalGrowingFirst
 
+1.0.4.0 - More null-checks for the wrapped work-scanner
+
+
 1.0.3.0 - Hopefully fixed the issue with unable to rightclick, thank you Dawnmist for the detailed report!
 
 

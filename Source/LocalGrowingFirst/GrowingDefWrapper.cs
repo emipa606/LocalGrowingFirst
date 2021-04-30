@@ -18,10 +18,13 @@ namespace LocalGrowingFirst
         private static void SetupWrappedDefs()
         {
             var growingWGs = DefDatabase<WorkGiverDef>.AllDefs.Where(wg => wg.workType == WorkTypeDefOf.Growing
-                                                                           && typeof(WorkGiver_Scanner).IsAssignableFrom(wg.giverClass)).ToList();
+                                                                           && typeof(WorkGiver_Scanner)
+                                                                               .IsAssignableFrom(wg.giverClass))
+                .ToList();
             var maxWorkerGiverPriority = growingWGs.Max(wg => wg.priorityInType);
 
-            DefDatabase<WorkGiverDef>.Add(growingWGs.Select(wg => CreateLocalWorkGiverDef(wg, maxWorkerGiverPriority + 1)));
+            DefDatabase<WorkGiverDef>.Add(growingWGs.Select(wg =>
+                CreateLocalWorkGiverDef(wg, maxWorkerGiverPriority + 1)));
         }
 
         private static WorkGiverDef CreateLocalWorkGiverDef(WorkGiverDef def, int priorityAdj)

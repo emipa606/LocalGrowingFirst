@@ -12,15 +12,17 @@ namespace LocalGrowingFirst
     {
         private WorkGiver_Scanner wrappedScanner;
 
-        public override ThingRequest PotentialWorkThingRequest => wrappedScanner.PotentialWorkThingRequest;
+        public override ThingRequest PotentialWorkThingRequest =>
+            wrappedScanner?.PotentialWorkThingRequest ?? base.PotentialWorkThingRequest;
 
-        public override int MaxRegionsToScanBeforeGlobalSearch => wrappedScanner.MaxRegionsToScanBeforeGlobalSearch;
+        public override int MaxRegionsToScanBeforeGlobalSearch => wrappedScanner?.MaxRegionsToScanBeforeGlobalSearch ??
+                                                                  base.MaxRegionsToScanBeforeGlobalSearch;
 
-        public override bool Prioritized => wrappedScanner.Prioritized;
+        public override bool Prioritized => wrappedScanner?.Prioritized ?? base.Prioritized;
 
-        public override bool AllowUnreachable => wrappedScanner.AllowUnreachable;
+        public override bool AllowUnreachable => wrappedScanner?.AllowUnreachable ?? base.AllowUnreachable;
 
-        public override PathEndMode PathEndMode => wrappedScanner.PathEndMode;
+        public override PathEndMode PathEndMode => wrappedScanner?.PathEndMode ?? base.PathEndMode;
 
         private void CreateWrappedScanner()
         {
@@ -34,32 +36,32 @@ namespace LocalGrowingFirst
 
         public override float GetPriority(Pawn pawn, TargetInfo t)
         {
-            return wrappedScanner.GetPriority(pawn, t);
+            return wrappedScanner?.GetPriority(pawn, t) ?? base.GetPriority(pawn, t);
         }
 
         public override bool HasJobOnCell(Pawn pawn, IntVec3 c, bool forced = false)
         {
-            return wrappedScanner.HasJobOnCell(pawn, c, forced);
+            return wrappedScanner?.HasJobOnCell(pawn, c, forced) ?? base.HasJobOnCell(pawn, c, forced);
         }
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            return wrappedScanner.HasJobOnThing(pawn, t, forced);
+            return wrappedScanner?.HasJobOnThing(pawn, t, forced) ?? base.HasJobOnThing(pawn, t, forced);
         }
 
         public override Job JobOnCell(Pawn pawn, IntVec3 cell, bool forced = false)
         {
-            return wrappedScanner.JobOnCell(pawn, cell, forced);
+            return wrappedScanner?.JobOnCell(pawn, cell, forced) ?? base.JobOnCell(pawn, cell, forced);
         }
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            return wrappedScanner.JobOnThing(pawn, t, forced);
+            return wrappedScanner?.JobOnThing(pawn, t, forced) ?? base.JobOnThing(pawn, t, forced);
         }
 
         public override Danger MaxPathDanger(Pawn pawn)
         {
-            return wrappedScanner.MaxPathDanger(pawn);
+            return wrappedScanner?.MaxPathDanger(pawn) ?? base.MaxPathDanger(pawn);
         }
 
         public override Job NonScanJob(Pawn pawn)
@@ -98,7 +100,10 @@ namespace LocalGrowingFirst
             if (!(pawn.Map.zoneManager.ZoneAt(pawn.Position) is Zone_Growing growZone))
             {
                 //Try edge cells in pawn facing direction next
-                growZone = GenAdj.CellsAdjacentAlongEdge(pawn.Position, pawn.Rotation, new IntVec2(1, 1), Utilities.EdgeFacingRotation(pawn.Rotation)).Select(p => pawn.Map.zoneManager.ZoneAt(p)).OfType<Zone_Growing>().FirstOrDefault();
+                growZone = GenAdj
+                    .CellsAdjacentAlongEdge(pawn.Position, pawn.Rotation, new IntVec2(1, 1),
+                        Utilities.EdgeFacingRotation(pawn.Rotation)).Select(p => pawn.Map.zoneManager.ZoneAt(p))
+                    .OfType<Zone_Growing>().FirstOrDefault();
 
                 if (growZone == default(Zone_Growing))
                 {
@@ -145,7 +150,7 @@ namespace LocalGrowingFirst
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
-            return wrappedScanner.PotentialWorkThingsGlobal(pawn);
+            return wrappedScanner?.PotentialWorkThingsGlobal(pawn) ?? base.PotentialWorkThingsGlobal(pawn);
         }
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
