@@ -28,10 +28,13 @@ namespace LocalGrowingFirst
         {
             var scannerType = (def.modExtensions.First(ext => ext is DefModExt_LocalZoneWrapping)
                 as DefModExt_LocalZoneWrapping)?.defToWrap.giverClass;
-            if (scannerType is not null)
+            if (scannerType is null)
             {
-                wrappedScanner = (WorkGiver_Scanner) Activator.CreateInstance(scannerType);
+                return;
             }
+
+            wrappedScanner = (WorkGiver_Scanner)Activator.CreateInstance(scannerType);
+            wrappedScanner.def = def;
         }
 
         public override float GetPriority(Pawn pawn, TargetInfo t)
@@ -120,7 +123,7 @@ namespace LocalGrowingFirst
                 //If there is an extraRequirement then check it, otherwise true
                 var extraRequirements = wrappedScanner.GetType().GetMethod("ExtraRequirements"
                     , BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-                if ((bool?) extraRequirements?.Invoke(wrappedScanner, new object[] {growZone, pawn}) ?? true)
+                if ((bool?)extraRequirements?.Invoke(wrappedScanner, new object[] { growZone, pawn }) ?? true)
                 {
                     if (pawn.CanReach(growZone.Cells[0], PathEndMode.OnCell, maxDanger))
                     {
