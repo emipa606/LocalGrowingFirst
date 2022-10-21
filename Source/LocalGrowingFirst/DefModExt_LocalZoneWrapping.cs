@@ -1,11 +1,10 @@
 ﻿using RimWorld;
 using Verse;
 
-namespace LocalGrowingFirst
+namespace LocalGrowingFirst;
+
+public class DefModExt_LocalZoneWrapping : DefModExtension
 {
-    public class DefModExt_LocalZoneWrapping : DefModExtension
-    {
-        public WorkGiverDef defToWrap;
-        public string Tag => "Dynamic"; //Advises this is a dynamic job and shouldn't be further manipulated
-    }
+    public WorkGiverDef defToWrap;
+    public string Tag => "Dynamic"; //Advises this is a dynamic job and shouldn't be further manipulated
 }
