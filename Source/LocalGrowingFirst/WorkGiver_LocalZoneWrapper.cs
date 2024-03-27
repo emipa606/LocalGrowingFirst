@@ -100,12 +100,12 @@ public class WorkGiver_LocalZoneWrapper : WorkGiver_Scanner
             , BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
         wantedPlantDef?.SetValue(wrappedScanner, null);
 
-        if (!(pawn.Map.zoneManager.ZoneAt(pawn.Position) is Zone_Growing growZone))
+        if (pawn.Map.zoneManager.ZoneAt(pawn.Position) is not Zone_Growing growZone)
         {
             //Try edge cells in pawn facing direction next
             growZone = GenAdj
                 .CellsAdjacentAlongEdge(pawn.Position, pawn.Rotation, new IntVec2(1, 1),
-                    Utilities.EdgeFacingRotation(pawn.Rotation)).Select(p => pawn.Map.zoneManager.ZoneAt(p))
+                    pawn.Rotation.AsInt).Select(p => pawn.Map.zoneManager.ZoneAt(p))
                 .OfType<Zone_Growing>().FirstOrDefault();
 
             if (growZone == default(Zone_Growing))
@@ -123,7 +123,7 @@ public class WorkGiver_LocalZoneWrapper : WorkGiver_Scanner
             //If there is an extraRequirement then check it, otherwise true
             var extraRequirements = wrappedScanner.GetType().GetMethod("ExtraRequirements"
                 , BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-            if ((bool?)extraRequirements?.Invoke(wrappedScanner, new object[] { growZone, pawn }) ?? true)
+            if ((bool?)extraRequirements?.Invoke(wrappedScanner, [growZone, pawn]) ?? true)
             {
                 if (pawn.CanReach(growZone.Cells[0], PathEndMode.OnCell, maxDanger))
                 {

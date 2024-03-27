@@ -21,11 +21,6 @@ public static class Utilities
             return LinkDirections.Down;
         }
 
-        if (rot == Rot4.West)
-        {
-            return LinkDirections.Left;
-        }
-
-        return LinkDirections.None;
+        return rot == Rot4.West ? LinkDirections.Left : LinkDirections.None;
     }
 }

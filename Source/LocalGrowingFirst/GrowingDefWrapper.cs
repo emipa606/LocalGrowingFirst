@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -39,18 +38,18 @@ public static class GrowingDefWrapper
             verb = def.verb,
             gerund = def.gerund,
             emergency = def.emergency,
-            requiredCapacities = new List<PawnCapacityDef>(def.requiredCapacities),
+            requiredCapacities = [..def.requiredCapacities],
             directOrderable = def.directOrderable,
             scanCells = def.scanCells,
             scanThings = def.scanThings,
             tagToGive = def.tagToGive,
-            modExtensions = new List<DefModExtension>(1)
-            {
+            modExtensions =
+            [
                 new DefModExt_LocalZoneWrapping
                 {
                     defToWrap = def
                 }
-            }
+            ]
         };
     }
 }
