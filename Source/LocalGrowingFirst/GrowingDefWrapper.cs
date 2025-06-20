@@ -9,12 +9,12 @@ public static class GrowingDefWrapper
 {
     static GrowingDefWrapper()
     {
-        SetupWrappedDefs();
+        setupWrappedDefs();
         WorkTypeDefOf.Growing.workGiversByPriority.Clear();
         WorkTypeDefOf.Growing.ResolveReferences();
     }
 
-    private static void SetupWrappedDefs()
+    private static void setupWrappedDefs()
     {
         var growingWGs = DefDatabase<WorkGiverDef>.AllDefs.Where(wg => wg.workType == WorkTypeDefOf.Growing
                                                                        && typeof(WorkGiver_Scanner)
@@ -23,10 +23,10 @@ public static class GrowingDefWrapper
         var maxWorkerGiverPriority = growingWGs.Max(wg => wg.priorityInType);
 
         DefDatabase<WorkGiverDef>.Add(growingWGs.Select(wg =>
-            CreateLocalWorkGiverDef(wg, maxWorkerGiverPriority + 1)));
+            createLocalWorkGiverDef(wg, maxWorkerGiverPriority + 1)));
     }
 
-    private static WorkGiverDef CreateLocalWorkGiverDef(WorkGiverDef def, int priorityAdj)
+    private static WorkGiverDef createLocalWorkGiverDef(WorkGiverDef def, int priorityAdj)
     {
         return new WorkGiverDef
         {

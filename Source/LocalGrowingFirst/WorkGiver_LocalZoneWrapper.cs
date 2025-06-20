@@ -24,7 +24,7 @@ public class WorkGiver_LocalZoneWrapper : WorkGiver_Scanner
 
     public override PathEndMode PathEndMode => wrappedScanner?.PathEndMode ?? base.PathEndMode;
 
-    private void CreateWrappedScanner()
+    private void createWrappedScanner()
     {
         var scannerType = (def.modExtensions.First(ext => ext is DefModExt_LocalZoneWrapping)
             as DefModExt_LocalZoneWrapping)?.defToWrap.giverClass;
@@ -71,7 +71,7 @@ public class WorkGiver_LocalZoneWrapper : WorkGiver_Scanner
     {
         if (wrappedScanner == null)
         {
-            CreateWrappedScanner();
+            createWrappedScanner();
         }
 
         return wrappedScanner == null ? base.NonScanJob(pawn) : wrappedScanner.NonScanJob(pawn);
@@ -81,7 +81,7 @@ public class WorkGiver_LocalZoneWrapper : WorkGiver_Scanner
     {
         if (wrappedScanner == null)
         {
-            CreateWrappedScanner();
+            createWrappedScanner();
         }
 
         if (wrappedScanner == null)
@@ -108,7 +108,7 @@ public class WorkGiver_LocalZoneWrapper : WorkGiver_Scanner
                     pawn.Rotation.AsInt).Select(p => pawn.Map.zoneManager.ZoneAt(p))
                 .OfType<Zone_Growing>().FirstOrDefault();
 
-            if (growZone == default(Zone_Growing))
+            if (growZone == null)
             {
                 yield break;
             }
@@ -132,7 +132,6 @@ public class WorkGiver_LocalZoneWrapper : WorkGiver_Scanner
                     {
                         var plantToSow = growZone.GetPlantDefToGrow();
                         addCells = plantToSow.plant.sowMinSkill <= pawn.skills.GetSkill(SkillDefOf.Plants).Level;
-                        //Log.Message("Pawn: " + pawn.NameShortColored + " GetPlantDefToGrow: " + growZone.GetPlantDefToGrow() + " CanSow: " + addCells);
                     }
 
                     if (addCells)
@@ -160,7 +159,7 @@ public class WorkGiver_LocalZoneWrapper : WorkGiver_Scanner
     {
         if (wrappedScanner == null)
         {
-            CreateWrappedScanner();
+            createWrappedScanner();
         }
 
         return wrappedScanner?.ShouldSkip(pawn, forced) ?? base.ShouldSkip(pawn, forced);

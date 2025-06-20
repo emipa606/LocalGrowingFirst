@@ -2,7 +2,7 @@
 <ModSyncNinjaData>
   <ID>da0144b7-0811-400f-ae20-cfa099b0a756</ID>
   <ModName>Local Growing First (Continued)</ModName>
-  <Version>1.5.0</Version>
+  <Version>1.6.0</Version>
   <SaveBreaking>False</SaveBreaking>
   <Host name="Github">
     <Owner>emipa606</Owner>
@@ -12,3 +12,4 @@
     <Branch>master</Branch>
   </Host>
 </ModSyncNinjaData>
+
