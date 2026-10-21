@@ -38,7 +38,7 @@ public static class GrowingDefWrapper
             verb = def.verb,
             gerund = def.gerund,
             emergency = def.emergency,
-            requiredCapacities = [..def.requiredCapacities],
+            requiredCapacities = [.. def.requiredCapacities],
             directOrderable = def.directOrderable,
             scanCells = def.scanCells,
             scanThings = def.scanThings,

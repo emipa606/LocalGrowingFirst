@@ -34,7 +34,7 @@ public class WorkGiver_LocalZoneWrapper : WorkGiver_Scanner
         }
 
         wrappedScanner = (WorkGiver_Scanner)Activator.CreateInstance(scannerType);
-        wrappedScanner.def = def;
+        wrappedScanner?.def = def;
     }
 
     public override float GetPriority(Pawn pawn, TargetInfo t)
@@ -123,27 +123,25 @@ public class WorkGiver_LocalZoneWrapper : WorkGiver_Scanner
             //If there is an extraRequirement then check it, otherwise true
             var extraRequirements = wrappedScanner.GetType().GetMethod("ExtraRequirements"
                 , BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-            if ((bool?)extraRequirements?.Invoke(wrappedScanner, [growZone, pawn]) ?? true)
+            if (((bool?)extraRequirements?.Invoke(wrappedScanner, [growZone, pawn]) ?? true) &&
+                pawn.CanReach(growZone.Cells[0], PathEndMode.OnCell, maxDanger))
             {
-                if (pawn.CanReach(growZone.Cells[0], PathEndMode.OnCell, maxDanger))
+                var addCells = true;
+                if (wrappedScanner?.ToString()?.Contains("Sow") == true)
                 {
-                    var addCells = true;
-                    if (wrappedScanner.ToString().Contains("Sow"))
-                    {
-                        var plantToSow = growZone.GetPlantDefToGrow();
-                        addCells = plantToSow.plant.sowMinSkill <= pawn.skills.GetSkill(SkillDefOf.Plants).Level;
-                    }
-
-                    if (addCells)
-                    {
-                        foreach (var potentialWorkCellsGlobal in growZone.cells)
-                        {
-                            yield return potentialWorkCellsGlobal;
-                        }
-                    }
-
-                    wantedPlantDef?.SetValue(wrappedScanner, null);
+                    var plantToSow = growZone.GetPlantDefToGrow();
+                    addCells = plantToSow.plant.sowMinSkill <= pawn.skills.GetSkill(SkillDefOf.Plants).Level;
                 }
+
+                if (addCells)
+                {
+                    foreach (var potentialWorkCellsGlobal in growZone.cells)
+                    {
+                        yield return potentialWorkCellsGlobal;
+                    }
+                }
+
+                wantedPlantDef?.SetValue(wrappedScanner, null);
             }
         }
 
